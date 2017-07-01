@@ -11,13 +11,73 @@ namespace MinImage
         [STAThread]
         static void Main(string[] args)
         {
-            List<Image> list = new List<Image>
-            {
-                GetImageFromUrl("http://40.media.tumblr.com/908d79921332a12f8b4122fcb71449c5/tumblr_noz619CUUx1ragy7jo1_500.jpg#cgm_id=1863"),
-                GetImageFromUrl("https://cdn.awwni.me/u8hj.jpg#cgm_id=24273")
-            };
+            if (args.Length == 0)
+                throw new ArgumentException("No files given");
+
+            List<Image> list = CreateImageList(args);
             Window window = new ImageWindow(list);
             window.Open();
+        }
+
+        private static List<Image> CreateImageList(ICollection<string> uri)
+        {
+            List<Image> list = new List<Image>();
+
+            foreach (var imageURI in uri)
+            {
+                if (IsValidURL(imageURI))
+                    list.Add(GetImageFromUrl(imageURI));
+                else if (IsLocalFilePath(imageURI))
+                    list.Add(GetImageFromFile(imageURI));
+                else
+                    throw new ArgumentException("Unknown argument");
+            }
+
+            return list;
+        }
+
+        private static Image GetImageFromFile(string imageURI)
+        {
+            return Image.FromFile(imageURI);
+        }
+
+        private static bool IsLocalFilePath(string filePath)
+        {
+            try
+            {
+                return TryIsLocalFilePath(filePath);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private static bool TryIsLocalFilePath(string filePath)
+        {
+            Uri uri = new Uri(filePath);
+            string scheme = uri.Scheme;
+            return scheme.Equals("file");
+        }
+
+        private static bool IsValidURL(string url)
+        {
+            try
+            {
+                return TryIsValidURL(url);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private static bool TryIsValidURL(string url)
+        {
+            Uri uri = new Uri(url);
+            String scheme = uri.Scheme;
+
+            return scheme.Equals("http") || scheme.Equals("https");
         }
 
         private static Image GetImageFromUrl(string url)
