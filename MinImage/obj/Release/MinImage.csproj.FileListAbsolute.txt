@@ -1,0 +1,8 @@
+D:\Workspace\MinImage\MinImage\MinImage\bin\Release\MinImage.exe.config
+D:\Workspace\MinImage\MinImage\MinImage\bin\Release\MinImage.exe
+D:\Workspace\MinImage\MinImage\MinImage\bin\Release\MinImage.pdb
+D:\Workspace\MinImage\MinImage\MinImage\obj\Release\MinImage.csprojResolveAssemblyReference.cache
+D:\Workspace\MinImage\MinImage\MinImage\obj\Release\MinImage.Properties.Resources.resources
+D:\Workspace\MinImage\MinImage\MinImage\obj\Release\MinImage.csproj.GenerateResource.Cache
+D:\Workspace\MinImage\MinImage\MinImage\obj\Release\MinImage.exe
+D:\Workspace\MinImage\MinImage\MinImage\obj\Release\MinImage.pdb

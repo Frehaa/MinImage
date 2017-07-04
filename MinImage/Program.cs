@@ -56,8 +56,7 @@ namespace MinImage
         private static bool TryIsLocalFilePath(string filePath)
         {
             Uri uri = new Uri(filePath);
-            string scheme = uri.Scheme;
-            return scheme.Equals("file");
+            return uri.IsFile;
         }
 
         private static bool IsValidURL(string url)

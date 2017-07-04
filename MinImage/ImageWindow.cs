@@ -24,8 +24,12 @@ namespace MinImage
         public ImageWindow(ICollection<Image> images)
         {
             this.images = new List<Image>(images);
+
+            window.BackgroundImageLayout = ImageLayout.Center;
+            window.BackColor = Color.Black;
+
             AddEventListeners();
-            RefreshImage();
+            UpdateImage();
         }
 
         private void AddEventListeners()
@@ -34,13 +38,34 @@ namespace MinImage
             window.KeyUp += RotateRightOnCtrlRight;
             window.KeyUp += NextImageOnRight;
             window.KeyUp += PreviousImageOnLeft;
+            window.DoubleClick += ToggleFullScreenOnDoubleClick;
         }
 
-        private void RefreshImage()
+        private void ToggleFullScreenOnDoubleClick(object sender, EventArgs e)
         {
+            if (window.WindowState == FormWindowState.Maximized)
+                window.WindowState = FormWindowState.Normal;
+            else
+                window.WindowState = FormWindowState.Maximized;
+        }
+
+        private void UpdateImage()
+        {
+            Screen screen = Screen.FromControl(window);
+
+            if (CurrentImage.Size.Width > screen.Bounds.Width || CurrentImage.Size.Height > screen.Bounds.Height)
+                ResizeImageToFitScreen();
+
             window.BackgroundImage = CurrentImage;
             window.Size = CurrentImage.Size;
             window.Refresh();
+            
+            Console.WriteLine("Height: " + screen.Bounds.Height + " width: " + screen.Bounds.Width);
+        }
+
+        private void ResizeImageToFitScreen()
+        {
+            //throw new NotImplementedException();
         }
 
         private void RotateLeftOnCtrlLeft(object sender, KeyEventArgs e)
@@ -70,20 +95,20 @@ namespace MinImage
         public void RotateLeft()
         {
             CurrentImage.RotateFlip(RotateFlipType.Rotate270FlipNone);
-            RefreshImage();
+            UpdateImage();
         }
 
         public void RotateRight()
         {   
             CurrentImage.RotateFlip(RotateFlipType.Rotate90FlipNone);
-            RefreshImage();
+            UpdateImage();
         }
 
         public void NextImage()
         {
             if (++currentIndex >= images.Count)
                 currentIndex = 0;
-            RefreshImage();
+            UpdateImage();
 
             Console.WriteLine("NextImage");
         }
@@ -92,9 +117,16 @@ namespace MinImage
         {
             if (--currentIndex < 0)
                 currentIndex = images.Count-1;
-            RefreshImage();
+            UpdateImage();
 
             Console.WriteLine("PreviousImage");
+        }
+
+        private Image ResizeImage(Image image)
+        {
+            Image resizedImage;
+
+            return image;
         }
     }
 }
