@@ -16,7 +16,7 @@ namespace MinImage
             {
                 return images[currentIndex];
             }
-        }        
+        }
 
         public ImageWindow(Image image) : this(new List<Image> { image })
         {}

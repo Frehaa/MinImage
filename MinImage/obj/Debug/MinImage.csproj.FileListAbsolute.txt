@@ -1,8 +1,0 @@
-D:\Workspace\MinImage\MinImage\MinImage\bin\Debug\MinImage.exe.config
-D:\Workspace\MinImage\MinImage\MinImage\bin\Debug\MinImage.exe
-D:\Workspace\MinImage\MinImage\MinImage\bin\Debug\MinImage.pdb
-D:\Workspace\MinImage\MinImage\MinImage\obj\Debug\MinImage.csprojResolveAssemblyReference.cache
-D:\Workspace\MinImage\MinImage\MinImage\obj\Debug\MinImage.Properties.Resources.resources
-D:\Workspace\MinImage\MinImage\MinImage\obj\Debug\MinImage.csproj.GenerateResource.Cache
-D:\Workspace\MinImage\MinImage\MinImage\obj\Debug\MinImage.exe
-D:\Workspace\MinImage\MinImage\MinImage\obj\Debug\MinImage.pdb
