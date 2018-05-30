@@ -15,7 +15,7 @@ namespace MinImage
                 throw new ArgumentException("No files given");
 
             List<Image> list = CreateImageList(args);
-            Window window = new ImageWindow(list);
+            ImageWindow window = new ImageWindow(list);
             window.Open();
         }
 

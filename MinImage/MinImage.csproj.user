@@ -1,6 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>http://40.media.tumblr.com/908d79921332a12f8b4122fcb71449c5/tumblr_noz619CUUx1ragy7jo1_500.jpg#cgm_id=1863 https://cdn.awwni.me/u8hj.jpg#cgm_id=24273</StartArguments>
+    <StartArguments>D:\Desktop\mia.png</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartArguments>D:\Desktop\mia.png</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <StartArguments>D:\Desktop\mia.png</StartArguments>
   </PropertyGroup>
 </Project>
