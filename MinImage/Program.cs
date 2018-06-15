@@ -3,20 +3,29 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Net;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace MinImage
 {
     static class Program
     {
+        static readonly Mutex mutex = new Mutex(true, "MinImage-hitotsu-kudasai");
+
         [STAThread]
         static void Main(string[] args)
         {
-            if (args.Length == 0)
-                throw new ArgumentException("No files given");
+            if (mutex.WaitOne(TimeSpan.Zero, true))
+            {
+                if (args.Length == 0)
+                    throw new ArgumentException("No files given");
 
-            List<Image> list = CreateImageList(args);
-            ImageWindow window = new ImageWindow(list);
-            window.Open();
+                List<Image> list = CreateImageList(args);
+                ImageWindow window = new ImageWindow(list);
+                window.Open();
+            } else {
+                MessageBox.Show("Test");
+            }            
         }
 
         private static List<Image> CreateImageList(ICollection<string> uri)
@@ -30,7 +39,7 @@ namespace MinImage
                 else if (IsLocalFilePath(imageURI))
                     list.Add(GetImageFromFile(imageURI));
                 else
-                    throw new ArgumentException("Unknown argument");
+                    throw new ArgumentException("Unknown URI: "+ imageURI);
             }
 
             return list;
