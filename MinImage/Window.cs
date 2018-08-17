@@ -14,7 +14,7 @@ namespace MinImage
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            window = new Form();
+            window = new DoubleBufferedForm();
             InitializeComponent();
         }
 
