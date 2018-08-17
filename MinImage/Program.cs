@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 
 namespace MinImage
@@ -14,26 +15,19 @@ namespace MinImage
             if (args.Length == 0)
                 throw new ArgumentException("No files given");
 
-            List<Image> list = CreateImageList(args);
+            var list = CreateImageList(args);
             Window window = new ImageWindow(list);
             window.Open();
         }
 
-        private static List<Image> CreateImageList(ICollection<string> uri)
+        private static IEnumerable<Image> CreateImageList(ICollection<string> uri)
         {
-            List<Image> list = new List<Image>();
-
-            foreach (var imageURI in uri)
+            return uri.Select(u =>
             {
-                if (IsValidURL(imageURI))
-                    list.Add(GetImageFromUrl(imageURI));
-                else if (IsLocalFilePath(imageURI))
-                    list.Add(GetImageFromFile(imageURI));
-                else
-                    throw new ArgumentException("Unknown argument");
-            }
-
-            return list;
+                if (IsValidURL(u)) return GetImageFromUrl(u);
+                else if (TryIsLocalFilePath(u)) return GetImageFromFile(u);
+                else throw new ArgumentException("Unknown argument");
+            });
         }
 
         private static Image GetImageFromFile(string imageURI)
