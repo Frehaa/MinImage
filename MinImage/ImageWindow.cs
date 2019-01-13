@@ -21,7 +21,7 @@ namespace MinImage
         public ImageWindow(Image image) : this(new List<Image> { image })
         {}
 
-        public ImageWindow(ICollection<Image> images)
+        public ImageWindow(IEnumerable<Image> images)
         {
             this.images = new List<Image>(images);
 
