@@ -21,12 +21,26 @@ namespace MinImage
                 if (args.Length == 0)
                     throw new ArgumentException("No files given");
 
-                List<Image> list = CreateImageList(args);
-                ImageWindow window = new ImageWindow(list);
+                IEnumerable<Image> images;
+                if (args[0] == "paste")
+                {
+                    images = new List<Image> { CreateClipboardImage() };
+                } 
+                else
+                {
+                    images = CreateImageList(args);
+                }
+                ImageWindow window = new ImageWindow(images);
                 window.Open();
+
             } else {
                 MessageBox.Show("Test");
             }            
+        }
+
+        private static Image CreateClipboardImage()
+        {
+            return Clipboard.GetImage();
         }
 
         private static IEnumerable<Image> CreateImageList(ICollection<string> uri)

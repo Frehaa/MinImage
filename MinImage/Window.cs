@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace MinImage
@@ -27,6 +28,19 @@ namespace MinImage
             window.MouseDown += AllowMoveOnLeftClickDown;
             window.MouseUp += DisallowMoveOnLeftClickUp;
             window.MouseMove += MoveIfMoveable;
+            window.KeyUp += ActOnKey;
+        }
+
+        private void ActOnKey(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.F3:
+                    window.TopMost = !window.TopMost;
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void CloseOnEscape(object sender, KeyEventArgs e)
