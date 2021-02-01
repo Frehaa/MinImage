@@ -9,12 +9,13 @@ namespace MinImage
         protected Form window;
         private bool isMoveable;
         private Point dragStartPoint;
-
+        public delegate void CloseEvent(Window window);
+        public event CloseEvent OnClose;
+        
         public Window()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
             window = new DoubleBufferedForm();
             InitializeComponent();
         }
@@ -29,6 +30,12 @@ namespace MinImage
             window.MouseUp += DisallowMoveOnLeftClickUp;
             window.MouseMove += MoveIfMoveable;
             window.KeyUp += ActOnKey;
+            window.FormClosed += Window_FormClosed;
+        }
+
+        private void Window_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            OnClose?.Invoke(this);
         }
 
         private void ActOnKey(object sender, KeyEventArgs e)

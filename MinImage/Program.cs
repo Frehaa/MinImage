@@ -12,36 +12,26 @@ namespace MinImage
     static class Program
     {
         static readonly Mutex mutex = new Mutex(true, "MinImage-hitotsu-kudasai");
+        static readonly ApplicationManager manager = new ApplicationManager();
 
         [STAThread]
         static void Main(string[] args)
         {
-            if (mutex.WaitOne(TimeSpan.Zero, true))
+            if (args.Length == 0)
+                throw new ArgumentException("No files given");
+
+            ImageWindow window;
+            if (args[0] == "paste")
             {
-                if (args.Length == 0)
-                    throw new ArgumentException("No files given");
-
-                IEnumerable<Image> images;
-                if (args[0] == "paste")
-                {
-                    images = new List<Image> { CreateClipboardImage() };
-                } 
-                else
-                {
-                    images = CreateImageList(args);
-                }
-                ImageWindow window = new ImageWindow(images);
-                window.Open();
-
-            } else {
-                MessageBox.Show("Test");
-            }            
+                window = new ImageWindow(Clipboard.GetImage());
+            } 
+            else
+            {
+                window = new ImageWindow(CreateImageList(args));
+            }
+            window.Open();
         }
 
-        private static Image CreateClipboardImage()
-        {
-            return Clipboard.GetImage();
-        }
 
         private static IEnumerable<Image> CreateImageList(ICollection<string> uri)
         {
