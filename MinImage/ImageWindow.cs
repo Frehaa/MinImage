@@ -9,6 +9,8 @@ namespace MinImage
     {
         private IList<Image> images;
         private int currentIndex = 0;
+        private ScrollBar scrollBar;
+        private PictureBox pictureBox;
 
         public Image CurrentImage
         {
@@ -25,6 +27,14 @@ namespace MinImage
         {
             this.images = new List<Image>(images);
 
+            //scrollBar = new VScrollBar();
+            //scrollBar.MinimumSize = window.Size;
+            //scrollBar.Hide();
+            //pictureBox = new PictureBox();
+
+            //window.Controls.Add(pictureBox);
+
+            //pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
             window.BackgroundImageLayout = ImageLayout.Center;
             window.BackColor = Color.Black;
 
@@ -53,8 +63,13 @@ namespace MinImage
         {
             Screen screen = Screen.FromControl(window);
 
+
+
             if (CurrentImage.Size.Width > screen.Bounds.Width || CurrentImage.Size.Height > screen.Bounds.Height)
                 ResizeImageToFitScreen();
+
+
+            //pictureBox.Image = CurrentImage;
 
             window.BackgroundImage = CurrentImage;
             window.Size = CurrentImage.Size;
@@ -65,7 +80,40 @@ namespace MinImage
 
         private void ResizeImageToFitScreen()
         {
-            //throw new NotImplementedException();
+            var screen = Screen.FromControl(window);
+
+            double width = screen.Bounds.Width;
+            double height = screen.Bounds.Height;
+            double ratio = width / height;
+
+            Console.WriteLine($"width = {width}, height = {height}, ratio = {ratio}");
+
+            var image = images[currentIndex];
+
+            double imageWidth = image.Width;
+            double imageHeight = image.Height;
+            double imageRatio = imageWidth / imageHeight;
+            Console.WriteLine($"imageWidth = {imageWidth}, imageHeight = {imageHeight}, imageRatio = {imageRatio}");
+
+            int newWidth = (int) imageWidth;
+            int newHeight = (int) imageHeight;
+            double newRatio = 0d;
+            
+            if (imageWidth > imageHeight)
+            {
+                newWidth = (int) width;
+                newHeight = (int)(newWidth * imageRatio);
+
+            }
+            else
+            {
+                newHeight = (int)(height);
+                newWidth = (int)(newHeight * imageRatio);
+            }
+            newRatio = (double)newWidth / newHeight;
+            
+            Console.WriteLine($"newWidth = {newWidth}, newHeight = {newHeight}, newRatio = {newRatio}");
+            images[currentIndex] = new Bitmap(image, newWidth, newHeight);
         }
 
         private void RotateLeftOnCtrlLeft(object sender, KeyEventArgs e)
