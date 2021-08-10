@@ -4,21 +4,34 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace MinImage
 {
     static class Program
     {
+        static readonly Mutex mutex = new Mutex(true, "MinImage-hitotsu-kudasai");
+        static readonly ApplicationManager manager = new ApplicationManager();
+
         [STAThread]
         static void Main(string[] args)
         {
             if (args.Length == 0)
                 throw new ArgumentException("No files given");
 
-            var list = CreateImageList(args);
-            Window window = new ImageWindow(list);
+            ImageWindow window;
+            if (args[0] == "paste")
+            {
+                window = new ImageWindow(Clipboard.GetImage());
+            } 
+            else
+            {
+                window = new ImageWindow(CreateImageList(args));
+            }
             window.Open();
         }
+
 
         private static IEnumerable<Image> CreateImageList(ICollection<string> uri)
         {
