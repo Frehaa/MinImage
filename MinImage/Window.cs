@@ -99,5 +99,14 @@ namespace MinImage
 
             window.Location = newLocation;
         }
+        public void MoveTo(Point position)
+        {
+            window.Location = position;
+        }
+
+        public void ToggleTop()
+        {
+            window.TopMost = !window.TopMost;
+        }
     }
 }

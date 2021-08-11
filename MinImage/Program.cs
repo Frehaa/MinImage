@@ -7,6 +7,8 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 
+using Mono.Options;
+
 namespace MinImage
 {
     static class Program
@@ -14,21 +16,60 @@ namespace MinImage
         static readonly Mutex mutex = new Mutex(true, "MinImage-hitotsu-kudasai");
         static readonly ApplicationManager manager = new ApplicationManager();
 
+        
         [STAThread]
         static void Main(string[] args)
         {
-            if (args.Length == 0)
-                throw new ArgumentException("No files given");
+            bool openAtCursor = false;
+            bool paste = false;
+            bool keepOnTop = false;
+            bool showHelp = false;
+
+            var p = new OptionSet() {
+                "Usage: MinImage [Image Url] [OPTIONS]+",
+                "",
+                "Options:",
+                { "c|cursor", "Open the window at the cursor's position.", v => openAtCursor = v != null },
+                { "p|paste", "Opens window with image from clipboard.", v => paste = v != null },
+                { "t|top", "Keeps window on top.", v => keepOnTop = v != null },
+                { "h|help", "Prints this message.", v => showHelp = v != null },
+
+            };
+
+            List<string> extra; 
+            try
+            {
+                extra = p.Parse(args);
+            } 
+            catch (OptionException e)
+            {
+                throw e;
+            }
+
+
+            if (showHelp)
+            {
+                p.WriteOptionDescriptions(Console.Out);
+                return;
+            }
 
             ImageWindow window;
-            if (args[0] == "paste")
+            if (paste)
             {
                 window = new ImageWindow(Clipboard.GetImage());
             } 
             else
             {
-                window = new ImageWindow(CreateImageList(args));
+                if (extra.Count == 0 && !paste)
+                    throw new ArgumentException("No files given");
+                window = new ImageWindow(CreateImageList(extra));
             }
+
+            if (openAtCursor)
+                window.MoveTo(Cursor.Position);
+            if (keepOnTop)
+                window.ToggleTop();
+
             window.Open();
         }
 

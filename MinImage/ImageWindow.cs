@@ -51,6 +51,7 @@ namespace MinImage
             window.DoubleClick += ToggleFullScreenOnDoubleClick;
         }
 
+
         private void ToggleFullScreenOnDoubleClick(object sender, EventArgs e)
         {
             if (window.WindowState == FormWindowState.Maximized)
