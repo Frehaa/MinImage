@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace MinImage
@@ -108,6 +107,11 @@ namespace MinImage
         public void MoveTo(Point location)
         {
             window.Location = location;
+        }
+
+        public void ToggleTop()
+        {
+            window.TopMost = !window.TopMost;
         }
     }
 }

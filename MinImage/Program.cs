@@ -16,6 +16,7 @@ namespace MinImage
         static readonly ApplicationManager manager = new ApplicationManager();
         static readonly OptionSet optionsParser = new OptionSet();
 
+        
         [STAThread]
         static void Main(string[] args)
         {
@@ -42,37 +43,35 @@ namespace MinImage
                 {
                     Console.WriteLine(w);
                 }
-            } 
+            }
             catch (OptionException e)
             {
                 ShowHelp();
                 return;
             }
 
+
             ImageWindow window;
             if (useClipboard)
             {
                 window = new ImageWindow(Clipboard.GetImage());
             } 
-            else
-            {
-                if (extra.Count == 0)
-                    throw new ArgumentException("No files given");
-                window = new ImageWindow(CreateImageList(args));
-            }
 
+            if (extra.Count == 0 && !useClipboard)
+                throw new ArgumentException("No files given");
+
+            window = new ImageWindow(CreateImageList(extra));
             if (onTop) window.MakeTopmost();
             if (openAtCursor) window.MoveTo(Cursor.Position);
-            
+
             window.Open();
         }
 
         private static void ShowHelp()
         {
             var name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
-            Console.WriteLine($"Usage: {name} [options]* [image urls]*");
+            Console.WriteLine($"Usage: {name} [options]+ [image urls]+");
             optionsParser.WriteOptionDescriptions(Console.Out);
-            Environment.Exit(0);
         }
 
         private static IEnumerable<Image> CreateImageList(ICollection<string> uri)

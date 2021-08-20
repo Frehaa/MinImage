@@ -9,26 +9,29 @@
 
 ## Keybindings
 
-    Ctrl + NumPlus      = Zoom in 
-    Ctrl + NumMinus     = Zoom out
-    Ctrl + Scroll up    = Zoom in
-    Ctrl + Scroll down  = Zoom out
+    Ctrl + NumPlus                  = Zoom in at center
+    Ctrl + NumMinus                 = Zoom out at center
+    Ctrl + Scroll up                = Zoom in at mouse
+    Ctrl + Scroll down              = Zoom out at mouse
+    
+    Right arrow                     = Next image
+    Left arrow                      = Previous image
+    Scroll up                       = Next image
+    Scroll down                     = Previous image
 
-    Right arrow         = Next image
-    Left arrow          = Previous image
-    Scroll up           = Next image
-    Scroll down         = Previous image
-
-    Ctrl + Left arrow   = Rotate left
-    Ctrl + Right arrow  = Rotate right
-    Ctrl + R            = Rotate left
-    Ctrl + Shift + R    = Rotate right
-
-    Mouse drag          = Move window
-    Ctrl + Mouse drag   = Move image within window (if zoomed in)
-    Alt  + Mouse drag   = Create new window for image 
-
-    H                   = Help
-    F1                  = Help
-    Escape              = Close active window                 
+    Ctrl + Left arrow               = Rotate left
+    Ctrl + Right arrow              = Rotate right
+    Ctrl + R                        = Rotate left
+    Ctrl + Shift + R                = Rotate right
+        
+    Left Mouse drag                 = Move window
+    Ctrl + Left Mouse drag          = Resize window (scale preserved)
+    Ctrl + Shift + Left Mouse drag  = Resize Window (free)
+    Right Mouse drag                = Move image within window (if zoomed in)
+    Alt  + Left Mouse drag          = Create new window for image 
+        
+    F                               = Fullscreen
+    H                               = Help
+    F1                              = Help
+    Escape                          = Close active window                 
 
