@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
+using Mono.Options;
 
 namespace MinImage
 {
@@ -13,25 +14,66 @@ namespace MinImage
     {
         static readonly Mutex mutex = new Mutex(true, "MinImage-hitotsu-kudasai");
         static readonly ApplicationManager manager = new ApplicationManager();
+        static readonly OptionSet optionsParser = new OptionSet();
 
         [STAThread]
         static void Main(string[] args)
         {
-            if (args.Length == 0)
-                throw new ArgumentException("No files given");
+            bool useClipboard = false;
+            bool openAtCursor = false;
+            bool onTop = false;
+
+            optionsParser.Add("p|paste", "Displays image using content from clipboard.", _ => useClipboard = true);
+            optionsParser.Add("c|cursor", "Opens the window at the position of the cursor.", _ => openAtCursor = true);
+            optionsParser.Add("t|top", "Prevents the window from being hidden behind other windows.", _ => onTop = true);
+            optionsParser.Add("h|help", "Prints this message.", _ => ShowHelp()); 
+            
+
+            List<string> extra;
+            try
+            {
+                extra = optionsParser.Parse(args);
+                foreach (var item in optionsParser.ArgumentSources)
+                {
+                    Console.WriteLine(item);
+
+                }
+                foreach (var w in extra)
+                {
+                    Console.WriteLine(w);
+                }
+            } 
+            catch (OptionException e)
+            {
+                ShowHelp();
+                return;
+            }
 
             ImageWindow window;
-            if (args[0] == "paste")
+            if (useClipboard)
             {
                 window = new ImageWindow(Clipboard.GetImage());
             } 
             else
             {
+                if (extra.Count == 0)
+                    throw new ArgumentException("No files given");
                 window = new ImageWindow(CreateImageList(args));
             }
+
+            if (onTop) window.MakeTopmost();
+            if (openAtCursor) window.MoveTo(Cursor.Position);
+            
             window.Open();
         }
 
+        private static void ShowHelp()
+        {
+            var name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+            Console.WriteLine($"Usage: {name} [options]* [image urls]*");
+            optionsParser.WriteOptionDescriptions(Console.Out);
+            Environment.Exit(0);
+        }
 
         private static IEnumerable<Image> CreateImageList(ICollection<string> uri)
         {
@@ -81,7 +123,7 @@ namespace MinImage
         private static bool TryIsValidURL(string url)
         {
             Uri uri = new Uri(url);
-            String scheme = uri.Scheme;
+            string scheme = uri.Scheme;
 
             return scheme.Equals("http") || scheme.Equals("https");
         }

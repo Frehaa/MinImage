@@ -66,6 +66,11 @@ namespace MinImage
             window.Close();
         }
 
+        public void MakeTopmost()
+        {
+            window.TopMost = true;
+        }
+
         private void AllowMoveOnLeftClickDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -98,6 +103,11 @@ namespace MinImage
             newLocation.Offset(amount);
 
             window.Location = newLocation;
+        }
+
+        public void MoveTo(Point location)
+        {
+            window.Location = location;
         }
     }
 }
