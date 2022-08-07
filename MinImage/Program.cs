@@ -20,11 +20,11 @@ namespace MinImage
         [STAThread]
         static void Main(string[] args)
         {
-            bool useClipboard = false;
+            bool useClipboard = true;
             bool openAtCursor = false;
             bool onTop = false;
 
-            optionsParser.Add("p|paste", "Displays image using content from clipboard.", _ => useClipboard = true);
+        //    optionsParser.Add("p|paste", "Displays image using content from clipboard.", _ => useClipboard = true);
             optionsParser.Add("c|cursor", "Opens the window at the position of the cursor.", _ => openAtCursor = true);
             optionsParser.Add("t|top", "Prevents the window from being hidden behind other windows.", _ => onTop = true);
             optionsParser.Add("h|help", "Prints this message.", _ => ShowHelp()); 
@@ -50,17 +50,28 @@ namespace MinImage
                 return;
             }
 
+            if (extra.Count == 0 && !useClipboard)
+            {
+                MessageBox.Show("No images to show.");
+                return;                
+            }
+
 
             ImageWindow window;
             if (useClipboard)
             {
+                Image img = Clipboard.GetImage();
+                if (img == null) {
+                    MessageBox.Show("Could not get file from clipboard.");
+                    return;
+                }
                 window = new ImageWindow(Clipboard.GetImage());
             } 
+            else
+            {
+                window = new ImageWindow(CreateImageList(extra));
+            }
 
-            if (extra.Count == 0 && !useClipboard)
-                throw new ArgumentException("No files given");
-
-            window = new ImageWindow(CreateImageList(extra));
             if (onTop) window.MakeTopmost();
             if (openAtCursor) window.MoveTo(Cursor.Position);
 
