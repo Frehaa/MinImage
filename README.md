@@ -1,3 +1,7 @@
+## Dependencies
+
+- [Mono.Options](https://www.nuget.org/packages/Mono.Options/)
+
 ## TODO
 
 * Open new windows in same application
